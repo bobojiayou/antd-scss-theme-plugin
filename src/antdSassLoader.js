@@ -5,9 +5,7 @@ import sassLoader from 'sass-loader';
 import importsToResolve from 'sass-loader/dist/importsToResolve';
 
 import { getScssThemePath } from './loaderUtils';
-import {
-  compileThemeVariables,
-} from './utils';
+import { compileThemeVariables } from './utils';
 
 
 /**
