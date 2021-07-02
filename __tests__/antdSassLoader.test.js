@@ -12,16 +12,15 @@ import { compileThemeVariables } from '../src/utils';
 
 
 describe('themeImporter', () => {
-  test.only('produces an importer that allows importing compiled antd variables', async (done) => {
+  test('produces an importer that allows importing compiled antd variables', async () => {
     const themePath = path.resolve(__dirname, 'data/theme.scss');
     const contents = await compileThemeVariables(themePath);
-    render({
+    return render({
       file: path.resolve(__dirname, 'data/test.scss'),
       importer: themeImporter(themePath, contents),
     }, (error, result) => {
       const compiledColor = result.css.toString().match(/background: (.*);/)[1];
       expect(compiledColor).toBe('yellow');
-      done();
     });
   });
 });

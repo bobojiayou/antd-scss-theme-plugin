@@ -52,6 +52,7 @@ describe('loadScssThemeAsLess', () => {
     expect(variables).toEqual({
       '@primary-color': '#f00',
       '@info-color': '#200',
+      "@warning-color": "yellow"
     });
   });
 });
