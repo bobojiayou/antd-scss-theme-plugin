@@ -10,8 +10,6 @@ import {
 import SharkrThemePlugin from '../src/index';
 import { compileThemeVariables } from '../src/utils';
 
-jest.setTimeout(20000)
-
 describe('themeImporter', () => {
   test('produces an importer that allows importing compiled antd variables', async () => {
     const themePath = path.resolve(__dirname, 'data/theme.scss');
@@ -72,6 +70,9 @@ describe('overloadSassLoaderOptions', () => {
 
 describe('antdSassLoader', () => {
   const outputPath = path.join(__dirname, 'output');
+  beforeAll(() => {
+    jest.setTimeout(20000)
+  })
   afterAll(() => {
     rimraf(outputPath, (error) => {
       if (error) {
@@ -80,7 +81,7 @@ describe('antdSassLoader', () => {
     });
   });
 
-  test.only('enables importing theme variables in scss processed with sass-loader', (done) => {
+  test.only('enables importing theme variables in scss processed with sass-loader', async () => {
     const config = {
       mode: 'development',
       entry: path.resolve(__dirname, 'data/test.scss'),
@@ -105,6 +106,9 @@ describe('antdSassLoader', () => {
         ],
       },
     };
-    compileWebpack(config, done);
+    const err = await compileWebpack(config);
+    if (err) {
+      console.log('err', err)
+    }
   });
-});
+}, 20000);

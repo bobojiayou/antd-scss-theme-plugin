@@ -78,7 +78,7 @@ export default function antdSassLoader(...args) {
 
       const scssThemePath = getScssThemePath(options);
       newLoaderContext.addDependency(scssThemePath);
-
+      console.log('...args', ...args)
       return sassLoader.call(newLoaderContext, ...args);
     })
     .catch((error) => {
