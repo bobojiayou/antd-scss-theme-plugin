@@ -10,6 +10,7 @@ import {
 import SharkrThemePlugin from '../src/index';
 import { compileThemeVariables } from '../src/utils';
 
+jest.setTimeout(20000)
 
 describe('themeImporter', () => {
   test('produces an importer that allows importing compiled antd variables', async () => {
@@ -79,20 +80,20 @@ describe('antdSassLoader', () => {
     });
   });
 
-  it('enables importing theme variables in scss processed with sass-loader', (done) => {
+  test.only('enables importing theme variables in scss processed with sass-loader', (done) => {
     const config = {
       mode: 'development',
       entry: path.resolve(__dirname, 'data/test.scss'),
       output: {
         path: outputPath,
-        filename: 'antdSassLoader.bundle.js',
+        filename: '[name].bundle.js',
       },
       module: {
         rules: [
           {
             test: /\.scss$/,
             use: [
-              'to-string-loader',
+              'raw-loader',
               SharkrThemePlugin.themify({
                 loader: 'sass-loader',
                 options: {

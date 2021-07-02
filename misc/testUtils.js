@@ -8,14 +8,14 @@ import webpack from 'webpack';
  * @param {function} done - jest's done callback that is called when compilation completes.
  */
 // eslint-disable-next-line import/prefer-default-export
-export const compileWebpack = (config, done) => {
+export const compileWebpack = (config) => {
   webpack(config, (compilerError, stats) => {
     const error = compilerError || (stats.hasErrors() && stats.compilation.errors[0]);
     if (error) {
       console.log('error', error)
-      done(error);
+      done(error)
     } else {
-      done();
+      done(error)
     }
   });
 };
