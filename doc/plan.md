@@ -1,6 +1,6 @@
 
 
-## 方案
+## 方案 一
 
 1. sass-loaer 的 additionalData 选项
 
@@ -40,3 +40,7 @@ module.exports = {
 
 ```
 所以我们要做的就是将我们自己的 主题 scss 文件， 转化为 变量字符串，我们现在需要这样的一个转换函数
+
+#### 结论
+
+不可行。因为 theme file 是 less 文件。需要先对其进行编译，编译完之后，导出为 scss 变量，再传给 sass-loader 才行

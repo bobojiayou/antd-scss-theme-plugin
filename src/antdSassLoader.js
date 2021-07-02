@@ -2,7 +2,7 @@ import path from 'path';
 
 import { getOptions, urlToRequest } from 'loader-utils';
 import sassLoader from 'sass-loader';
-import importsToResolve from 'sass-loader/dist/importsToResolve';
+import { getPossibleRequests } from 'sass-loader/dist/utils';
 
 import { getScssThemePath } from './loaderUtils';
 import { compileThemeVariables } from './utils';
@@ -17,7 +17,7 @@ import { compileThemeVariables } from './utils';
  */
 export const themeImporter = (themeScssPath, contents) => (url, previousResolve, done) => {
   const request = urlToRequest(url);
-  const pathsToTry = importsToResolve(request);
+  const pathsToTry = getPossibleRequests(request);
 
   const baseDirectory = path.dirname(previousResolve);
   for (let i = 0; i < pathsToTry.length; i += 1) {
@@ -53,9 +53,7 @@ export const overloadSassLoaderOptions = async (options) => {
   } else {
     importer = extraImporter;
   }
-
   newOptions.importer = importer;
-
   return newOptions;
 };
 
@@ -76,7 +74,7 @@ export default function antdSassLoader(...args) {
   overloadSassLoaderOptions(options)
     .then((newOptions) => {
       delete newOptions.scssThemePath; // eslint-disable-line no-param-reassign
-      newLoaderContext.query = newOptions;
+      newLoaderContext.query = { sassOptions: newOptions };
 
       const scssThemePath = getScssThemePath(options);
       newLoaderContext.addDependency(scssThemePath);

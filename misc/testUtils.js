@@ -12,8 +12,8 @@ export const compileWebpack = (config, done) => {
   webpack(config, (compilerError, stats) => {
     const error = compilerError || (stats.hasErrors() && stats.compilation.errors[0]);
     if (error) {
-      done.fail(error);
-      done();
+      console.log('error', error)
+      done(error);
     } else {
       done();
     }

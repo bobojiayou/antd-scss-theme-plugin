@@ -1,6 +1,5 @@
 import path from 'path';
-
-import sass from 'node-sass';
+import { render } from 'sass';
 import rimraf from 'rimraf';
 
 import { compileWebpack } from '../misc/testUtils';
@@ -8,20 +7,20 @@ import {
   themeImporter,
   overloadSassLoaderOptions,
 } from '../src/antdSassLoader';
-import AntdScssThemePlugin from '../src/index';
+import SharkrThemePlugin from '../src/index';
 import { compileThemeVariables } from '../src/utils';
 
 
 describe('themeImporter', () => {
-  it('produces an importer that allows importing compiled antd variables', async (done) => {
+  test.only('produces an importer that allows importing compiled antd variables', async (done) => {
     const themePath = path.resolve(__dirname, 'data/theme.scss');
     const contents = await compileThemeVariables(themePath);
-    sass.render({
+    render({
       file: path.resolve(__dirname, 'data/test.scss'),
       importer: themeImporter(themePath, contents),
     }, (error, result) => {
       const compiledColor = result.css.toString().match(/background: (.*);/)[1];
-      expect(compiledColor).toBe('#faad14');
+      expect(compiledColor).toBe('yellow');
       done();
     });
   });
@@ -56,13 +55,13 @@ describe('overloadSassLoaderOptions', () => {
 
   it('uses scss theme path from plugin when not given one through options', async () => {
     // eslint-disable-next-line no-unused-vars
-    const plugin = new AntdScssThemePlugin(scssThemePath);
+    const plugin = new SharkrThemePlugin(scssThemePath);
     const overloadedOptions = await overloadSassLoaderOptions({});
     expect(typeof overloadedOptions.importer).toBe('function');
   });
 
   it('throws error when no scss theme path is supplied', (done) => {
-    AntdScssThemePlugin.SCSS_THEME_PATH = null;
+    SharkrThemePlugin.SCSS_THEME_PATH = null;
     overloadSassLoaderOptions({})
       .catch((error) => {
         expect(error.message).toMatch(/scss theme file must be specified/i);
@@ -70,7 +69,6 @@ describe('overloadSassLoaderOptions', () => {
       });
   });
 });
-
 
 describe('antdSassLoader', () => {
   const outputPath = path.join(__dirname, 'output');
@@ -84,6 +82,7 @@ describe('antdSassLoader', () => {
 
   it('enables importing theme variables in scss processed with sass-loader', (done) => {
     const config = {
+      mode: 'development',
       entry: path.resolve(__dirname, 'data/test.scss'),
       output: {
         path: outputPath,
@@ -94,8 +93,8 @@ describe('antdSassLoader', () => {
           {
             test: /\.scss$/,
             use: [
-              'raw-loader',
-              AntdScssThemePlugin.themify({
+              'to-string-loader',
+              SharkrThemePlugin.themify({
                 loader: 'sass-loader',
                 options: {
                   scssThemePath: path.resolve(__dirname, 'data/theme.scss'),

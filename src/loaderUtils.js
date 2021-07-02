@@ -1,4 +1,4 @@
-import AntdScssThemePlugin from './index';
+import SharkrThemePlugin from './index';
 
 
 /**
@@ -8,7 +8,7 @@ import AntdScssThemePlugin from './index';
  */
 // eslint-disable-next-line import/prefer-default-export
 export const getScssThemePath = (options) => {
-  const scssThemePath = options.scssThemePath || AntdScssThemePlugin.SCSS_THEME_PATH;
+  const scssThemePath = options.scssThemePath || SharkrThemePlugin.SCSS_THEME_PATH;
 
   if (!scssThemePath) {
     throw new Error(

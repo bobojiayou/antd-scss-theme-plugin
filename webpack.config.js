@@ -1,28 +1,25 @@
 const path = require('path');
 
+const packageJson = require('./package.json');
 const nodeExternals = require('webpack-node-externals');
 
-const packageJson = require('./package.json');
 
+const env = process.env.NODE_ENV;
 
 const webpackConfig = {
-  devtool: 'cheap-module-source-map',
-  entry: path.join(__dirname, 'src', 'index.js'),
-  externals: [
-    nodeExternals(),
-    'antd',
-    'less',
-    'less-loader',
-    'sass-loader',
-  ],
+  target: 'node',
+  mode: 'development',
+  context: path.resolve(__dirname, 'src'),
+  entry: {
+    index: { import: './index.js', filename: '[name].js' },
+    extractVariablesLessPlugin: { import: './extractVariablesLessPlugin.js', filename: '[name].js' },
+    antdSassLoader: { import: './antdSassLoader.js', filename: '[name].js' },
+    antdLessLoader: { import: './antdLessLoader.js', filename: '[name].js' },
+    loaderUtils: { import: './loaderUtils.js', filename: '[name].js' },
+    utils: { import: './utils.js', filename: '[name].js' },
+  },
   module: {
     rules: [
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        enforce: 'pre',
-        loader: 'eslint-loader',
-      },
       {
         test: /\.js$/,
         exclude: /node_modules/,
@@ -31,12 +28,18 @@ const webpackConfig = {
     ],
   },
   output: {
-    path: path.join(__dirname, 'build', 'dev'),
-    filename: `${packageJson.name}.js`,
-    library: 'AntdScssThemePlugin',
-    libraryTarget: 'commonjs',
+    path: path.join(__dirname, 'build'),
+    library: 'SharkrThemePlugin',
+    libraryTarget: 'umd',
+    clean: true,
   },
-  target: 'node',
+  externals: [
+    nodeExternals(),
+    'antd',
+    'less',
+    'less-loader',
+    'sass-loader',
+  ],
 };
 
 

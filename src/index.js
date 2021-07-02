@@ -1,8 +1,8 @@
-class AntdScssThemePlugin {
+class SharkrThemePlugin {
   SCSS_THEME_PATH;
 
   constructor(scssThemePath) {
-    AntdScssThemePlugin.SCSS_THEME_PATH = scssThemePath;
+    SharkrThemePlugin.SCSS_THEME_PATH = scssThemePath;
   }
 
   /**
@@ -13,7 +13,7 @@ class AntdScssThemePlugin {
   apply(compiler) {
     const afterEmit = (compilation, callback) => {
       // Watch the theme file for changes.
-      const theme = AntdScssThemePlugin.SCSS_THEME_PATH;
+      const theme = SharkrThemePlugin.SCSS_THEME_PATH;
       if (theme) {
         if (
           Array.isArray(compilation.fileDependencies)
@@ -33,7 +33,7 @@ class AntdScssThemePlugin {
     // Register the callback for...
     if (compiler.hooks) {
       // ... webpack 4, or...
-      const plugin = { name: 'AntdScssThemePlugin' };
+      const plugin = { name: 'SharkrThemePlugin' };
       compiler.hooks.afterEmit.tapAsync(plugin, afterEmit);
     } else {
       // ... webpack 3.
@@ -64,7 +64,6 @@ class AntdScssThemePlugin {
         overloadedLoader = loader;
         break;
     }
-
     return {
       loader: overloadedLoader,
       options,
@@ -73,4 +72,4 @@ class AntdScssThemePlugin {
 }
 
 
-export default AntdScssThemePlugin;
+export default SharkrThemePlugin;

@@ -1,17 +1,15 @@
 {
-  "plugins": [
-    "add-module-exports"
-  ],
   "presets": [
+    "@babel/env"
+  ],
+  "plugins": [
+    "add-module-exports",
+    "@babel/plugin-transform-runtime",
     [
-      "env",
+      "@babel/plugin-proposal-class-properties",
       {
-        "useBuiltIns": true,
-        "targets": {
-          "node": "6.9.0"
-        }
+        "loose": true
       }
-    ],
-    "stage-2"
+    ]
   ]
 }
